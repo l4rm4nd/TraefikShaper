@@ -122,10 +122,18 @@ networks:
     external: true
 ````
 
-Once spawned, an external party cannot access the whoami service at `https://whoami.example.com/`. The external party will receive a `403 Forbidden` error. However, the external party can browse the `https://whoami.example.com/knock-knock` endpoint, which will be forwarded to the `traefikshaper` container. On success, the external party will receive an HTTP response, stating that an admin was asked for approval. Furthermore, a random word is displayed adn highlighted.
+Once spawned, an external party cannot access the whoami service at `https://whoami.example.com/`. The external party will receive a `403 Forbidden` error. However, the external party can browse the `https://whoami.example.com/knock-knock` endpoint, which will be forwarded to the `traefikshaper` container. On success, the external party will receive an HTTP response, stating that an admin was asked for approval. Furthermore, a random word is displayed and highlighted.
 
-The admin, on the other hand, will receive an Apprise notification with an approval link and the random word. The admin and external party can now compare the random word, which ensures that the request originated from the external party. Furthermore, the (WAN) IP address of the external party is also included and displayed within the approval link. Once the admin opens the approval link, the (WAN) IP address of the external party will be added to Traefik's dynamic configuration file `dynamic-ipwhitelist@file`. This basically adds the IP address temporarely to the IpAllowList middleware. The external party can now browse `https://whoami.example.com` and gain access to the whoami container service. 
+The admin, on the other hand, will receive an Apprise notification with an approval link and the random word. The admin and external party can now compare the random word, which ensures that the request originated from the external party. Furthermore, the (WAN) IP address of the external party is also included and displayed within the approval link. Once the admin opens the approval link, the (WAN) IP address of the external party will be added to the `IPAllowList` of Traefik's dynamic configuration file `dynamic-ipwhitelist@file`. The external party can now browse `https://whoami.example.com` and gain temporary access to the whoami container service. 
 
-Important notes:
-- The default expiration time can be configured via the environment variable `EXPIRATION_TIME` or by modifying the GET parameter `expiration_time` within the approval link directly.
-- If your Traefik reverse proxy runs behind another proxy like CloudFlare, you must adjust the IP strategy depth via the environment varibale `IPSTRATEGY_DEPTH`.
+> [!WARNING]
+>
+> The TraefikShaper container is usually not exposed to the Internet.
+>
+> You may do so for convenient admin approvals, but I recommend accessing it locally or via VPN only.
+
+> [!CAUTION]
+>
+> If your Traefik reverse proxy runs behind another proxy (e.g. CloudFlare), you must adjust the [IP strategy depth](https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/#ipstrategydepth) via the environment varibale `IPSTRATEGY_DEPTH`. More details [here](https://vince.ca/posts/traefikee-ipwhitelist-behind-cloudflare/#cloudflare).
+>
+> Usually, a depth of `1` will work and select the correct client IP address for whitelisting. If your Traefik reverse proxy is exposed directly to the Internet, you can leave the depth at the default value of `0`.
