@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+
+  traefikshaper:
+    image: l4rm4nd/traefikshaper:latest
+    container_name: traefikshaper
+    restart: unless-stopped
+    environment:
+      - APPURL=http://localhost:5000 # please change; e.g. https://traefikshaper.example.com
+      - GRANT_HTTP_ENDPOINT=/knock-knock # the endpoint for clients to request access
+      - IPSTRATEGY_DEPTH=0 # the ipstrategy used in the IPAllowList middleware; use 1 if traefik runs behind another proxy (e.g. CloudFlare)
+      - EXPIRATION_TIME=300 # expiration time in seconds; or how long access is granted
+      - APPRISE_NOTIFICATION_URL=tgram://bottoken/ChatID # add your preferred apprise url; see https://github.com/caronc/apprise
+    expose:
+      - 5000/tcp
+    ports:
+      - 5000:5000/tcp
+    volumes:
+      - ./dynamic-whitelist.yml:/app/dynamic-whitelist.yml
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.traefikshaper.rule=Host(`traefikshaper.example.com`)
+      - traefik.http.routers.traefikshaper.service=traefikshaper
+      - traefik.http.services.traefikshaper.loadbalancer.server.port=5000
+      # Optional part for traefik middlewares
+      #- traefik.http.routers.traefikshaper.middlewares=local-ipwhitelist@file
+
+networks:
+  proxy:
+    external: true

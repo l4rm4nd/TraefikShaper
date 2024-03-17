@@ -1,0 +1,8 @@
+http:
+  middlewares:
+    dynamic-ipwhitelist:
+      IPAllowList:
+        ipstrategy:
+          depth: 0
+        sourceRange:
+        - 127.0.0.1/32

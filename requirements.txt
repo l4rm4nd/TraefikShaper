@@ -1,0 +1,5 @@
+requests
+flask
+pyyaml
+random-word
+apprise
