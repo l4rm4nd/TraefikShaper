@@ -138,3 +138,5 @@ The admin, on the other hand, will receive an Apprise notification with an appro
 > If your Traefik reverse proxy runs behind another proxy (e.g. CloudFlare), you must adjust the [IP strategy depth](https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/#ipstrategydepth) via the environment varibale `IPSTRATEGY_DEPTH`. More details [here](https://vince.ca/posts/traefikee-ipwhitelist-behind-cloudflare/#cloudflare).
 >
 > Usually, a depth of `1` will work and select the correct client IP address for whitelisting. If your Traefik reverse proxy is exposed directly to the Internet, you can leave the depth at the default value of `0`.
+> 
+> Once you have enabled a depth of `1`, local requests via split brain DNS won't work and be validated correctly against the middleware. You will always receive `403 Forbidden`. Read [this](https://community.traefik.io/t/traefik-v2-ipwhitelist-depth-with-cloudflare-and-local-network/13332) for more info.
