@@ -60,14 +60,15 @@ Please adjust the Traefik labels and ensure that this container is accessible by
 
 Following environment variables are available:
 
-| Environment Variable        | Description                                                                                                                           | Status      | Default                | Example                               |
-|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-------------|------------------------|---------------------------------------|
-| APPURL                      | The URL of the traefikshaper application for admin approval requests.                                                                 | Optional    | http://localhost:5000  | `https://traefikshaper.example.com`   |
-| GRANT_HTTP_ENDPOINT         | The HTTP endpoint for clients to request access.                                                                                      | Optional    | /knock-knock           | `/letmein`                            |
-| IPSTRATEGY_DEPTH            | The `ipstrategy` used in the `IPAllowList` middleware. Use `1` if Traefik runs behind another proxy (e.g., CloudFlare).               | Optional    | 0                      | `1`                                   | 
-| EXPIRATION_TIME             | Expiration time for grants in seconds.                                                                                                | Optional    | 300                    | `3600`                                |
-| SECRET_KEY                  | A secret for HMAC token generation. Creates a random secret if missing.                                                               | Optional    | Randomly generated     | `MySecureSecretForTokenGen`           |
-| APPRISE_NOTIFICATION_URL    | An Apprise notification url. See [here](https://github.com/caronc/apprise). If unset, only container logs will print links.           | Optional    | unset                  | `tgram://<BOTTOKEN>/<CHAT-ID>`        |
+| Environment Variable                | Description                                                                                                                           | Status      | Default                | Example                               |
+|-----------------------------        |---------------------------------------------------------------------------------------------------------------------------------------|-------------|------------------------|---------------------------------------|
+| APPURL                              | The URL of the traefikshaper application for admin approval requests.                                                                 | Optional    | http://localhost:5000  | `https://traefikshaper.example.com`   |
+| GRANT_HTTP_ENDPOINT                 | The HTTP endpoint for clients to request access.                                                                                      | Optional    | /knock-knock           | `/letmein`                            |
+| IPSTRATEGY_DEPTH                    | The `ipstrategy` used in the `IPAllowList` middleware. Use `1` if Traefik runs behind another proxy (e.g., CloudFlare).               | Optional    | 0                      | `1`                                   | 
+| DEFAULT_PRIVATE_CLASS_SOURCE_RANGE  | If set to `True`, adds the private class subnets 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16 as default to the IPAllowList.          | Optional    | False                  | `True`                                | 
+| EXPIRATION_TIME                     | Expiration time for grants in seconds.                                                                                                | Optional    | 300                    | `3600`                                |
+| SECRET_KEY                          | A secret for HMAC token generation. Creates a random secret if missing.                                                               | Optional    | Randomly generated     | `MySecureSecretForTokenGen`           |
+| APPRISE_NOTIFICATION_URL            | An Apprise notification url. See [here](https://github.com/caronc/apprise). If unset, only container logs will print links.           | Optional    |                        | `tgram://<BOTTOKEN>/<CHAT-ID>`        |
 
 You can spawn it up as follows:
 
