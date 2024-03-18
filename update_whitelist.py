@@ -36,9 +36,6 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', "default")
 # Get hostname and protocol from environment variables
 APPURL = os.getenv('APPURL', "http://localhost:5000")
 
-# Get IP strategy depth from environment variable or default to 0
-IPSTRATEGY_DEPTH = int(os.getenv('IPSTRATEGY_DEPTH', 0))
-
 # Get grant HTTP endpoint from environment variable or default to /knock-knock
 GRANT_HTTP_ENDPOINT = os.getenv('GRANT_HTTP_ENDPOINT', '/knock-knock')
 
@@ -67,8 +64,13 @@ def send_notification(message):
         return False
 
 def overwrite_middleware():
+
     # Get default source range from environment variable
     DEFAULT_PRIVATE_CLASS_SOURCE_RANGE = os.getenv('DEFAULT_PRIVATE_CLASS_SOURCE_RANGE')
+    # Get IP strategy depth from environment variable or default to 0
+    IPSTRATEGY_DEPTH = int(os.getenv('IPSTRATEGY_DEPTH', 0))
+    # Get IP strategy exclude ips from environment variable
+    EXCLUDED_IPS = os.getenv('EXCLUDED_IPS', None)
 
     if DEFAULT_PRIVATE_CLASS_SOURCE_RANGE == "True":
         # allow private class ranges as default
@@ -76,23 +78,45 @@ def overwrite_middleware():
     else:
         # allow localhost only as default
         DEFAULT_SOURCE_RANGE = ['127.0.0.1/32']
+
+    if EXCLUDED_IPS != None:
+        EXCLUDED_IPS = EXCLUDED_IPS.split(',')
         
-    # Overwrite the middleware file to ensure only 127.0.0.1/32 is added
-    whitelist_file = 'dynamic-whitelist.yml'
-    whitelist = {
-        'http': {
-            'middlewares': {
-                'dynamic-ipwhitelist': {
-                    'IPAllowList': {
-                        'sourceRange': DEFAULT_SOURCE_RANGE,
-                        'ipstrategy': {
-                            'depth': IPSTRATEGY_DEPTH
+        # use ip strategy exclude ips, use the 
+        whitelist = {
+            'http': {
+                'middlewares': {
+                    'dynamic-ipwhitelist': {
+                        'IPAllowList': {
+                            'sourceRange': DEFAULT_SOURCE_RANGE,
+                            'ipstrategy': {
+                                'excludedips': EXCLUDED_IPS
+                            }
                         }
                     }
                 }
             }
         }
-    }
+    else:
+        # use ip strategy depth
+        whitelist = {
+            'http': {
+                'middlewares': {
+                    'dynamic-ipwhitelist': {
+                        'IPAllowList': {
+                            'sourceRange': DEFAULT_SOURCE_RANGE,
+                            'ipstrategy': {
+                                'depth': IPSTRATEGY_DEPTH
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    # Overwrite the middleware file to ensure only 127.0.0.1/32 is added
+    whitelist_file = 'dynamic-whitelist.yml'
+
     with open(whitelist_file, 'w') as file:
         yaml.dump(whitelist, file)
 
