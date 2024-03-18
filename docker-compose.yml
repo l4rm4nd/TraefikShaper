@@ -9,6 +9,7 @@ services:
     environment:
       - APPURL=http://localhost:5000 # please change; e.g. https://traefikshaper.example.com
       - GRANT_HTTP_ENDPOINT=/knock-knock # the endpoint for clients to request access
+      - DEFAULT_PRIVATE_CLASS_SOURCE_RANGE=True # add private class subnets to the IPAllowList per default
       - IPSTRATEGY_DEPTH=0 # the ipstrategy used in the IPAllowList middleware; use 1 if traefik runs behind another proxy (e.g. CloudFlare)
       - EXPIRATION_TIME=300 # expiration time in seconds; or how long access is granted
       - APPRISE_NOTIFICATION_URL=tgram://bottoken/ChatID # add your preferred apprise url; see https://github.com/caronc/apprise
