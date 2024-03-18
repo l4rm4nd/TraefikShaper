@@ -10,8 +10,7 @@ services:
       - APPURL=http://localhost:5000 # please change; e.g. https://traefikshaper.example.com
       - GRANT_HTTP_ENDPOINT=/knock-knock # the endpoint for clients to request access
       - DEFAULT_PRIVATE_CLASS_SOURCE_RANGE=True # add private class subnets to the IPAllowList per default
-      - IPSTRATEGY_DEPTH=0 # the ipstrategy used in the IPAllowList middleware; use 1 if traefik runs behind another proxy (e.g. CloudFlare)
-      #- EXCLUDED_IPS=103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,104.16.0.0/13,104.24.0.0/14,108.162.192.0/18,131.0.72.0/22,141.101.64.0/18,162.158.0.0/15,172.64.0.0/13,173.245.48.0/20,188.114.96.0/20,190.93.240.0/20,197.234.240.0/22,198.41.128.0/17,2400:cb00::/32,2606:4700::/32,2803:f800::/32,2405:b500::/32,2405:8100::/32,2a06:98c0::/29,2c0f:f248::/32
+      - IPSTRATEGY_DEPTH=0 # the depth ip strategy used in the IPAllowList middleware; use 1 if traefik runs behind another proxy (e.g. CloudFlare)
       - EXPIRATION_TIME=300 # expiration time in seconds; or how long access is granted
       - APPRISE_NOTIFICATION_URL=tgram://bottoken/ChatID # add your preferred apprise url; see https://github.com/caronc/apprise
     expose:
