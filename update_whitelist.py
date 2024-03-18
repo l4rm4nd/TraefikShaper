@@ -67,6 +67,16 @@ def send_notification(message):
         return False
 
 def overwrite_middleware():
+    # Get default source range from environment variable
+    DEFAULT_PRIVATE_CLASS_SOURCE_RANGE = os.getenv('DEFAULT_PRIVATE_CLASS_SOURCE_RANGE')
+
+    if DEFAULT_PRIVATE_CLASS_SOURCE_RANGE == "True":
+        # allow private class ranges as default
+        DEFAULT_SOURCE_RANGE = ['127.0.0.1/32', '10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16']
+    else:
+        # allow localhost only as default
+        DEFAULT_SOURCE_RANGE = ['127.0.0.1/32']
+        
     # Overwrite the middleware file to ensure only 127.0.0.1/32 is added
     whitelist_file = 'dynamic-whitelist.yml'
     whitelist = {
