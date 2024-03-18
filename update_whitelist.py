@@ -84,7 +84,7 @@ def overwrite_middleware():
             'middlewares': {
                 'dynamic-ipwhitelist': {
                     'IPAllowList': {
-                        'sourceRange': ['127.0.0.1/32'],
+                        'sourceRange': DEFAULT_SOURCE_RANGE,
                         'ipstrategy': {
                             'depth': IPSTRATEGY_DEPTH
                         }
