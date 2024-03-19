@@ -26,8 +26,7 @@ If the admin would like to grant access, he must open the approval link. That's 
 
 Areas of use:
 
-- Quick access to a container service behind Traefik without need for VPN
-- Granting temporary access to services to external parties (e.g. for testing things out)
+- Granting temporary access to web services (alternative to VPN, BasicAuth and static IP whitelists)
 
 ## 🎥 Demo
 
@@ -141,3 +140,20 @@ The admin, on the other hand, will receive an Apprise notification with an appro
 > Usually, a depth of `1` will work and select the correct client IP address for whitelisting. More details [here](https://vince.ca/posts/traefikee-ipwhitelist-behind-cloudflare/#cloudflare). If your Traefik reverse proxy is exposed directly to the Internet, you can leave the depth at the default value of `0` and ignore all available ip strategies.
 > 
 > Once you have enabled a depth of `1` though, local requests via split brain DNS won't work anymore. You will always receive `403 Forbidden`. Read [this](https://community.traefik.io/t/traefik-v2-ipwhitelist-depth-with-cloudflare-and-local-network/13332) for more info. You can then opt for the `excludeips` strategy and define all CloudFlare IPv4 and IPv6 addresses as comma-separated string. Those IPs will then be excluded by Traefik in the `X-Forwarded-For` HTTP header and the first IP will be used that remains. More information [here](https://www.reddit.com/r/Traefik/comments/skbjd1/comment/ima96of/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button). However, this likely will not resolve the issue, as stated [here](https://community.traefik.io/t/ipwhitelist-with-excludedips-setting-will-result-in-empty-ip-address-when-there-is-1-ip-address-in-x-forwarded-for-header/17491). So TraefikShaper may only work reliably behind a second proxy like CloudFlare if you use the `depth` ip strategy set to `1` and can live with the fact that local requests won't work and cannot match the IPAllowList (will always lead to `Rejecting IP : empty`). Use different routers for internal and external proxy hosts!
+
+## 🙋 FAQ
+
+<details>
+  <summary>Can I apply multiple IPAllowList middlewares to the same container router?</summary>
+    The `dynamic-ipwhitelist@file` middleware must be the single IPAllowList middleware for the container router. The reason for this is that Traefik does not merge IPAllowList source ranges. Each middleware is checked by its own and if the source IP does not match the configured source range for an IPAllowList, access is denied. The TraefikShaper container only manipulates a single IPAllowList middleware and not mutliple ones. Therefore, you have to use a single middleware that states the IPAllowList source ranges allowed. In general, you can use different routers with host rules though.
+</details>
+
+<details>
+  <summary>How do I remove a falsely approved IP?</summary>
+    Either restart the TraefikShaper container, which resets the middleware or manually adjust the `dynamic-whitelist.yml` dynamic configuration file.
+</details>
+
+<details>
+  <summary>Can I use this container with other reverse proxies?</summary>
+    No. TraefikShaper only works with the Traefik reverse proxy (v2 and v3).
+</details>
