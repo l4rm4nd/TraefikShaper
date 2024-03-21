@@ -157,3 +157,8 @@ The admin, on the other hand, will receive an Apprise notification with an appro
   <summary>Can I use this container with other reverse proxies?</summary>
     No. TraefikShaper only works with the Traefik reverse proxy (v2 and v3).
 </details>
+
+<details>
+  <summary>This does not work. I only receive 401 Forbidden, even after whitelisting.</summary>
+    Enable Traefik debug logging and inspect the logs. You will see the reasons why the request could not pass the IpAllowList source range. Ensure that only one middleware with `IpAllowList` is in use. Also read up on the `IPSTRATEGY_DEPTH` env variable.
+</details>
