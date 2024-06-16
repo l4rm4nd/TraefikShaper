@@ -68,7 +68,7 @@ def overwrite_middleware():
     # Get default source range from environment variable
     DEFAULT_PRIVATE_CLASS_SOURCE_RANGE = os.getenv('DEFAULT_PRIVATE_CLASS_SOURCE_RANGE')
     # Get whitelisted IPs
-    WHITELISTED_IPS = os.getenv('WHITELISTED_IPS', [])
+    WHITELISTED_IPS = os.getenv('WHITELISTED_IPS', None)
     # Get IP strategy depth from environment variable or default to 0
     IPSTRATEGY_DEPTH = int(os.getenv('IPSTRATEGY_DEPTH', 0))
     # Get IP strategy exclude ips from environment variable
@@ -81,7 +81,9 @@ def overwrite_middleware():
         # allow localhost only as default
         DEFAULT_SOURCE_RANGE = ['127.0.0.1/32']
 
-    DEFAULT_SOURCE_RANGE.append(WHITELISTED_IPS)
+    if WHITELISTED_IPS != None:
+        WHITELISTED_IPS = WHITELISTED_IPS.split(',')
+        DEFAULT_SOURCE_RANGE.append(WHITELISTED_IPS)
 
     if EXCLUDED_IPS != None:
         EXCLUDED_IPS = EXCLUDED_IPS.split(',')
