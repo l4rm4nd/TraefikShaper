@@ -29,10 +29,6 @@ SECRET_KEY = os.getenv('SECRET_KEY', secrets.token_hex(16))
 # Get default expiration time from environment variable or default to 20 seconds
 EXPIRATION_TIME = int(os.getenv('EXPIRATION_TIME', 300))
 
-# Telegram bot configuration
-TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', "default")
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', "default")
-
 # Get hostname and protocol from environment variables
 APPURL = os.getenv('APPURL', "http://localhost:5000")
 
