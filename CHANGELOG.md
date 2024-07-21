@@ -1,3 +1,12 @@
+## [0.1.2](https://github.com/l4rm4nd/TraefikShaper/compare/v0.1.1...v0.1.2) (2024-07-21)
+
+
+### Bug Fixes
+
+* **docker:** upgrade base python image ([e516b04](https://github.com/l4rm4nd/TraefikShaper/commit/e516b04d3c29254e8f232ad7da8e06d118710410))
+
+
+
 ## [0.1.1](https://github.com/l4rm4nd/TraefikShaper/compare/v0.1.0...v0.1.1) (2024-07-19)
 
 
