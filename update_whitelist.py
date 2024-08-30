@@ -79,7 +79,7 @@ def overwrite_middleware():
 
     if WHITELISTED_IPS != None:
         WHITELISTED_IPS = WHITELISTED_IPS.split(',')
-        DEFAULT_SOURCE_RANGE.append(WHITELISTED_IPS)
+        DEFAULT_SOURCE_RANGE += WHITELISTED_IPS
 
     if EXCLUDED_IPS != None:
         EXCLUDED_IPS = EXCLUDED_IPS.split(',')
