@@ -35,7 +35,7 @@ Areas of use:
 ## 🔨 Setup and Usage
 
 >[!TIP]
-> Someone build a Traefik plugin around this idea. May check it out [here](https://github.com/hhftechnology/ipwhitelistshaper).
+> HHF Technology build a Traefik plugin around this idea. May check it out [here](https://github.com/hhftechnology/ipwhitelistshaper).
 
 ### Prerequisites
 
